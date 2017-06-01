@@ -30,7 +30,7 @@ import com.alibaba.dubbo.rpc.RpcResult;
 
 /**
  * CacheFilter
- *
+ * 
  * @author william.liangf
  */
 @Activate(group = {Constants.CONSUMER, Constants.PROVIDER}, value = Constants.CACHE_KEY)
@@ -39,7 +39,8 @@ public class CacheFilter implements Filter {
     private CacheFactory cacheFactory;
 
     public void setCacheFactory(CacheFactory cacheFactory) {
-        this.cacheFactory = cacheFactory;
+        //this.cacheFactory = cacheFactory;
+        this.cacheFactory = new CacheFactoryAdpative();
     }
 
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
@@ -53,7 +54,7 @@ public class CacheFilter implements Filter {
                         return new RpcResult(value);
                     }
                     Result result = invoker.invoke(invocation);
-                    if (!result.hasException()) {
+                    if (! result.hasException()) {
                         cache.put(key, result.getValue());
                     }
                     return result;
